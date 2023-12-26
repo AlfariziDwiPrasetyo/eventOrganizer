@@ -9,6 +9,10 @@ app.use(express.json());
 const routerUser = controllerUser;
 app.use("/api/v1/user", routerUser);
 
+//error handler
+const globalErrHandler = require("./src/middlewares/globalErrHandler");
+app.use(globalErrHandler);
+
 app.listen(3000, () => {
   console.log("Server Running in " + 3000);
 });

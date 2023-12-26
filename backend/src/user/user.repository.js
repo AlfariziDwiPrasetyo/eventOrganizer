@@ -8,4 +8,13 @@ const createUser = async (data) => {
   return newUser;
 };
 
-module.exports = { createUser };
+const findUser = async (email) => {
+  const userFound = await User.findFirst({
+    where: {
+      email,
+    },
+  });
+  return userFound;
+};
+
+module.exports = { createUser, findUser };
