@@ -20,7 +20,7 @@ model Event {
   name        String
   description String
   address     String
-  date        DateTime
+  date        DateTime @db.Date
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
   tickets     Ticket[]

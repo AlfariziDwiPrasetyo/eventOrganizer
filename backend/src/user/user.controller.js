@@ -11,7 +11,6 @@ const {
   validateUserRegistration,
 } = require("../middlewares/validateUser");
 const generateToken = require("../utils/generateToken");
-const verifyToken = require("../utils/verifyToken");
 const isLogin = require("../middlewares/isLogin");
 
 const router = express.Router();
