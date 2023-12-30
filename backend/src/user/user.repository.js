@@ -17,4 +17,33 @@ const findUser = async (email) => {
   return userFound;
 };
 
-module.exports = { createUser, findUser };
+const getUserById = async (id) => {
+  const getUser = await User.findFirst({
+    where: {
+      id,
+    },
+  });
+  return getUser;
+};
+
+const deleteUserById = async (id) => {
+  const deleteUser = await User.delete({
+    where: {
+      id,
+    },
+  });
+  return deleteUser;
+};
+
+const updateUserById = async (id, data) => {
+  const updateUser = await User.update({ where: { id }, data });
+  return updateUser;
+};
+
+module.exports = {
+  createUser,
+  findUser,
+  getUserById,
+  deleteUserById,
+  updateUserById,
+};

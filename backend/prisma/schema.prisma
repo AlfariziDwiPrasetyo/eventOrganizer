@@ -20,6 +20,7 @@ model Event {
   name        String
   description String
   address     String
+  date        DateTime
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
   tickets     Ticket[]

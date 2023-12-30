@@ -1,5 +1,11 @@
 const bcrypt = require("bcrypt");
-const { createUser, findUser } = require("./user.repository");
+const {
+  createUser,
+  findUser,
+  getUserById,
+  deleteUserById,
+  updateUserById,
+} = require("./user.repository");
 
 const registerNewUser = async (name, email, password) => {
   //check is the email taken
@@ -34,4 +40,42 @@ const loginUser = async (email, password) => {
   return userFound;
 };
 
-module.exports = { registerNewUser, loginUser };
+const userById = async (id) => {
+  const user = await getUserById(id);
+  if (!user) {
+    throw Error("User Not Found");
+  }
+  return user;
+};
+
+const deleteUser = async (id) => {
+  const user = await getUserById(id);
+  if (!user) {
+    throw Error("User Not Found");
+  }
+  const deletedUser = await deleteUserById(id);
+  return deletedUser;
+};
+
+const updateUser = async (id, data) => {
+  const user = await getUserById(id);
+  if (!user) {
+    throw Error("User Not Found");
+  }
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  const dataBody = {
+    name: data.name,
+    email: data.email,
+    password: hashedPassword,
+  };
+  const updatedUser = await updateUserById(id, dataBody);
+  return updatedUser;
+};
+
+module.exports = {
+  registerNewUser,
+  loginUser,
+  userById,
+  deleteUser,
+  updateUser,
+};
