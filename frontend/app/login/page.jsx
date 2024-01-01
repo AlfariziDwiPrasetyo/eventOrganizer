@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   FormControl,
@@ -9,10 +9,29 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const [error, setError] = useState(false);
+  const { push } = useRouter();
+
   const submitForm = () => {
-    alert(formik.values.password);
+    const postData = {
+      email: formik.values.email,
+      password: formik.values.password,
+    };
+    axios
+      .post(`${process.env.NEXT_PUBLIC_SERVER}user/login`, postData)
+      .then((res) => {
+        const token = JSON.stringify(res.data.token);
+        localStorage.setItem("token", token);
+        push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(true);
+      });
   };
 
   const formik = useFormik({
@@ -49,9 +68,29 @@ const page = () => {
     const { target } = event;
     formik.setFieldValue(target.name, target.value);
   };
-  console.log(formik.errors.password);
+
   return (
     <>
+      {error && (
+        <div className="p-5">
+          <div role="alert" className="alert alert-error text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Email atau Kata sandi salah</span>
+          </div>
+        </div>
+      )}
       <Container className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Heading className="mt-10 text-center text-3xl font-bold leading-9 tracking-tight black-text">

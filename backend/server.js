@@ -22,6 +22,6 @@ app.use("/api/v1/event", controllerEvent);
 const globalErrHandler = require("./src/middlewares/globalErrHandler");
 app.use(globalErrHandler);
 
-app.listen(3000, () => {
-  console.log("Server Running in " + 3000);
+app.listen(process.env.PORT, () => {
+  console.log("Server Running in " + process.env.PORT);
 });
