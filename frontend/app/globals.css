@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.blue-text{
+    color: #525CEB;
+}
+
+.gray-text{
+    color : rgb(130, 168, 180)
+}
+
+.black-text {
+    color : #3D3B40
+}

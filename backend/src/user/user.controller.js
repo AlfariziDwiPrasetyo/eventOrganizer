@@ -23,7 +23,6 @@ router.post(
     try {
       const newUser = await registerNewUser(name, email, password);
       res.status(201).json({
-        data: newUser,
         status: "Success",
       });
     } catch (error) {

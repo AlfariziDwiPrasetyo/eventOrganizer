@@ -21,6 +21,7 @@ model Event {
   description String
   address     String
   date        DateTime @db.Date
+  banner      String
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
   tickets     Ticket[]

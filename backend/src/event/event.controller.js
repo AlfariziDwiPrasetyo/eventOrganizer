@@ -8,9 +8,11 @@ const {
   updateEventById,
 } = require("./event.service");
 const validateEventPost = require("../middlewares/validateEvent");
+const upload = require("../middlewares/multerConfig");
 
 const router = express.Router();
 
+//get all event
 router.get("/", async (req, res, next) => {
   try {
     const events = await allEvents();
@@ -23,6 +25,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+//get one event
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -36,28 +39,38 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/post", isLogin, validateEventPost, async (req, res, next) => {
-  const id = req.user;
-  const { name, description, address, date } = req.body;
-  const data = {
-    name,
-    description,
-    address,
-    date,
-    authorId: id,
-  };
-  try {
-    const event = await createNewEvent(data);
-    console.log(event);
-    res.status(200).json({
-      event,
-      status: "Success",
-    });
-  } catch (error) {
-    next(new Error(error.message));
+//post event
+router.post(
+  "/post",
+  isLogin,
+  upload.single("banner"),
+  validateEventPost,
+  async (req, res, next) => {
+    const id = req.user;
+    const { name, description, address, date } = req.body;
+    const banner = req.file.path;
+    const data = {
+      name,
+      description,
+      address,
+      date,
+      banner,
+      authorId: id,
+    };
+    try {
+      const event = await createNewEvent(data);
+      console.log(event);
+      res.status(200).json({
+        event,
+        status: "Success",
+      });
+    } catch (error) {
+      next(new Error(error.message));
+    }
   }
-});
+);
 
+//update event
 router.put("/:id", isLogin, async (req, res, next) => {
   const { id } = req.params;
   const { name, description, address, date } = req.body;
@@ -78,6 +91,7 @@ router.put("/:id", isLogin, async (req, res, next) => {
   }
 });
 
+//delete event
 router.delete("/:id", isLogin, async (req, res, next) => {
   const { id } = req.params;
   try {
