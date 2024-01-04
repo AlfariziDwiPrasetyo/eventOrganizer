@@ -17,3 +17,13 @@
 .black-text {
     color : #3D3B40
 }
+
+.button-blue{
+    background-color: #525CEB;
+    color: white;
+}
+
+.button-blue:hover{
+    background-color: #242b91;
+    color: white
+}

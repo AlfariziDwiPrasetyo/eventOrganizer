@@ -11,10 +11,12 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/utils/authContext";
 
 const page = () => {
   const [error, setError] = useState(false);
   const { push } = useRouter();
+  const { login } = useAuth();
 
   const submitForm = () => {
     const postData = {
@@ -26,6 +28,7 @@ const page = () => {
       .then((res) => {
         const token = JSON.stringify(res.data.token);
         localStorage.setItem("token", token);
+        login();
         push("/");
       })
       .catch((error) => {

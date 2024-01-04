@@ -1,7 +1,7 @@
 import { Figtree } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-
+import { AuthProvider } from "@/utils/authContext";
 const figtree = Figtree({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,8 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html data-theme="cupcake" lang="en">
       <body className={figtree.className}>
-        <Navbar />
-        {children}
+        <AuthProvider>
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
