@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import ProfileNav from "./ProfileNav";
 import { useAuth } from "@/utils/authContext";
+import { navigateToLogin } from "@/app/action";
 
 const Navbar = () => {
   const { authenticated, logout } = useAuth();
   const handleLogout = () => {
     logout();
+    navigateToLogin();
   };
 
   return (

@@ -1,35 +1,49 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { navigateToLogin } from "../action";
+import { isLoggedIn } from "@/utils/authUtils";
 
 const page = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
+
   useEffect(() => {
-    // get the token from local storage
-    const token = localStorage.getItem("token");
-    const parsedToken = JSON.parse(token);
+    const getUser = async () => {
+      const loginUser = await isLoggedIn();
 
-    // config axios
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${parsedToken}`,
+      if (!loginUser) {
+        navigateToLogin();
+      } else {
+        setUser(loginUser);
+      }
     };
-
-    const axiosConfig = {
-      method: "GET",
-      url: "http://localhost:3001/api/v1/user/profile",
-      headers: headers,
-    };
-    axios(axiosConfig).then((res) => {
-      console.log(res);
-      setUser(res);
-    });
+    getUser();
   }, []);
 
   return (
-    <section>
-      <p>halo</p>
-    </section>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md max-w-md">
+        <div className="flex items-center justify-center mb-6">
+          <img
+            className="w-24 h-24 rounded-full mr-4"
+            src="https://source.unsplash.com/200x200/?portrait"
+            alt="Profile Picture"
+          />
+          <div>
+            <h1 className="text-3xl font-semibold">Your Name</h1>
+            <p className="text-gray-600">Web Developer</p>
+          </div>
+        </div>
+        <p className="text-gray-600 mb-4">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <div className="border-t pt-4">
+          <p className="text-gray-600">Email: your.email@example.com</p>
+          <p className="text-gray-600">Location: Your City, Your Country</p>
+          {/* Add more details as needed */}
+        </div>
+      </div>
+    </div>
   );
 };
 
